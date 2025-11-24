@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:latest
+FROM dunglas/frankenphp:php8.3
 
 # Composer 
 RUN set -ex; \     
