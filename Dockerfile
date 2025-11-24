@@ -30,6 +30,7 @@ RUN set -eux; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
     chmod +x /usr/local/bin/composer
 
+WORKDIR /var/www 
 #
 #docker-php-ext-install -j$(nproc) \
 #bcmath calendar curl intl ldap mysqli pdo pdo_mysql gd redis soap xdebug xml zip; \
