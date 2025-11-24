@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:latest
+FROM dunglas/frankenphp:php8.2
 
 # Composer 
 RUN set -ex; \     
@@ -8,7 +8,7 @@ RUN set -ex; \
 RUN install-php-extensions bcmath calendar curl intl ldap mysqli pdo pdo_mysql gd mongodb-1.15.1 redis soap xdebug xml zip;
 
 
-# Installer les extensions PHP nécessaires (Redis et PDO MySQL)
+# Installer les extensions PHP nécessaires
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
