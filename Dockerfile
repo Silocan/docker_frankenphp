@@ -1,11 +1,11 @@
-FROM dunglas/frankenphp:php8.3
+FROM dunglas/frankenphp:php8.4
 
 # Composer 
 RUN set -ex; \     
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
     chmod +x /usr/local/bin/composer
 
-RUN install-php-extensions bcmath calendar curl intl ldap mysqli pdo pdo_mysql gd mongodb-1.15.1 redis soap xdebug xml zip;
+RUN install-php-extensions amqp bcmath calendar curl intl ldap mysqli pdo pdo_mysql pdo_pgsql gd mongodb redis soap xdebug xml xsl zip;
 
 
 # Installer les extensions PHP nécessaires (Redis et PDO MySQL)
