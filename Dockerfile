@@ -5,7 +5,7 @@ RUN set -ex; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
     chmod +x /usr/local/bin/composer
 
-RUN install-php-extensions amqp bcmath calendar curl intl ldap mysqli pdo pdo_mysql pdo_pgsql gd mongodb redis soap xdebug xml xsl zip;
+RUN install-php-extensions amqp bcmath calendar curl intl ldap mysqli pdo pdo_mysql pdo_pgsql pdo_sqlsrv gd mongodb redis soap xdebug xml xsl zip;
 
 
 # Installer les extensions PHP nécessaires (Redis et PDO MySQL)
