@@ -1,36 +1,32 @@
-FROM dunglas/frankenphp:php8.2
+# syntax=docker/dockerfile:1
 
-# Composer 
-RUN set -ex; \     
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
-    chmod +x /usr/local/bin/composer
+FROM dunglas/frankenphp:1-php8.2
 
-RUN install-php-extensions bcmath calendar curl intl ldap mysqli pdo pdo_mysql gd mongodb-1.15.1 redis soap xdebug xml zip;
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_NO_INTERACTION=1 \
+    XDEBUG_MODE=off
 
-# Installer les extensions PHP nécessaires
-RUN set -eux; \
+# curl, pdo et xml sont déjà compilés dans l'image. install-php-extensions
+# installe les libs -dev et les retire tout seul.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends \
-        libhiredis-dev \
-        libzip-dev \
-        pkg-config \
-        default-mysql-client \
-        curl; \
-    curl -sSLf -o /usr/local/bin/install-php-extensions \
-        https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
-    chmod +x /usr/local/bin/install-php-extensions; \
+    apt-get install -y --no-install-recommends default-mysql-client; \
     install-php-extensions \
-        bcmath calendar curl intl ldap mysqli mongodb pdo pdo_mysql gd redis soap sockets xdebug xml zip; \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        libhiredis-dev \
-        libzip-dev \
-        pkg-config; \
-    rm -rf /var/lib/apt/lists/*; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
-    chmod +x /usr/local/bin/composer
-
-#
-#docker-php-ext-install -j$(nproc) \
-#bcmath calendar curl intl ldap mysqli pdo pdo_mysql gd redis soap xdebug xml zip; \
-#pecl install redis mongodb; \
+        bcmath \
+        calendar \
+        gd \
+        intl \
+        ldap \
+        mongodb-1.15.1 \
+        mysqli \
+        opcache \
+        pdo_mysql \
+        redis \
+        soap \
+        sockets \
+        xdebug \
+        zip
