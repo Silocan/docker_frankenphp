@@ -30,3 +30,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         sockets \
         xdebug \
         zip
+
+# Sécurité : ne pas exposer la version de PHP (en-tête X-Powered-By)
+RUN printf "; Durcissement sécurité\nexpose_php = Off\n" > "$PHP_INI_DIR/conf.d/zz-security.ini"
